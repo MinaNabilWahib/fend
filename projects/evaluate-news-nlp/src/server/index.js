@@ -1,3 +1,6 @@
+// Setup empty JS object to act as endpoint for all routes
+projectData = {};
+
 var path = require('path')
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
@@ -6,28 +9,54 @@ dotenv.config();
 
 console.log(`Your API key is ${process.env.API_KEY}`);
 
-
-// You could call it aylienapi, or anything else
-var textapi = new MeaningCloud({
-    application_key: process.env.API_KEY
-  });
-
 const app = express()
+
+const bodyParser = require('body-parser');
+
+/* Middleware*/
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Cors for cross origin allowance
+const cors = require('cors');
+app.use(cors());
 
 app.use(express.static('dist'))
 
 console.log(__dirname)
 
-app.get('/', function (req, res) {
-    // res.sendFile('dist/index.html')
-    res.sendFile(path.resolve('src/client/views/index.html'))
-})
+// Setup Server
+const port = 8082;
+const server = app.listen(port,listening);
 
-// designates what port the app will listen to for incoming requests
-app.listen(8080, function () {
-    console.log('Example app listening on port 8080!')
-})
+// callback to debug
+function listening()
+{
+    console.log('server running');
+    console.log(`running in localhost: ${port}`);
+};
+// Post Route
+app.post('/addReview', addReview);
 
-app.get('/test', function (req, res) {
-    res.send(mockAPIResponse)
-})
+function addReview (req,res)
+{
+    projectData.model = req.body.model;
+    projectData.score_tag = req.body.score_tag;
+    projectData.agreement = req.body.agreement;
+    projectData.subjectivity = req.body.subjectivity;
+    projectData.confidence = req.body.confidence;
+    projectData.irony = req.body.irony;
+    
+    res.send(projectData);
+    console.log(projectData);
+};
+//get
+app.get('/all',getData)
+
+function getData(req,res)
+{
+  res.send(projectData);
+  console.log(projectData);
+}
+
