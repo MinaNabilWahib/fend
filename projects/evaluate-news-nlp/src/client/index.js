@@ -4,7 +4,7 @@ import './styles/style.scss'
 const baseURL = 'https://api.meaningcloud.com/sentiment-2.1';
 
 
-// Personal API Key for OpenWeatherMap API
+// Personal API Key for meaningcloud API
 const apiKey = process.env.API_KEY;
 
 // Event listener to add function to existing HTML DOM element
