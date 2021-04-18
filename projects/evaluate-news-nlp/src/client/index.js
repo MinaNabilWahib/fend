@@ -1,4 +1,6 @@
+
 import './styles/style.scss'
+
 
 
 // Event listener to add function to existing HTML DOM element
@@ -10,6 +12,10 @@ document.getElementById('generate').addEventListener('click', performAction);
 function performAction(e)
 {
     const article = document.getElementById('Article').value;
+    if(article == '')
+    {
+        alert("No article was entered please enter an article");
+    }
     postData('/getReview',{article:article})
    // getReview(baseURL,apiKey,article)
     .then(function(data)
@@ -48,7 +54,7 @@ const postData = async ( url = '', data = {})=>
         console.log("error", error);
       }
   }
-
+  
 
 //update data in website
 const updateUI = async () => 
@@ -71,6 +77,7 @@ const updateUI = async () =>
       console.log("error", error);
     }
 }
+
 
 
 // Check that service workers are supported
