@@ -15,16 +15,18 @@ function performAction(e)
     if(article == '')
     {
         alert("No article was entered please enter an article");
-    }
-    postData('/getReview',{article:article})
-   // getReview(baseURL,apiKey,article)
-    .then(function(data)
+    }else
     {
-        // Add data
-        //console.log(data);
-        postData('/addReview', {model: data.model,score_tag: data.score_tag,agreement: data.agreement,subjectivity: data.subjectivity,confidence: data.confidence, irony: data.irony} );
-        updateUI()
-    })
+        postData('/getReview',{article:article})
+      // getReview(baseURL,apiKey,article)
+        .then(function(data)
+        {
+            // Add data
+            //console.log(data);
+            postData('/addReview', {model: data.model,score_tag: data.score_tag,agreement: data.agreement,subjectivity: data.subjectivity,confidence: data.confidence, irony: data.irony} );
+            updateUI()
+        })
+  }
 }
 
 
