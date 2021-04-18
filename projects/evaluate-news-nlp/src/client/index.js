@@ -1,11 +1,5 @@
 import './styles/style.scss'
 
-/* Global Variables */
-const baseURL = 'https://api.meaningcloud.com/sentiment-2.1';
-
-
-// Personal API Key for meaningcloud API
-const apiKey = process.env.API_KEY;
 
 // Event listener to add function to existing HTML DOM element
 
@@ -16,11 +10,12 @@ document.getElementById('generate').addEventListener('click', performAction);
 function performAction(e)
 {
     const article = document.getElementById('Article').value;
-    getReview(baseURL,apiKey,article)
+    postData('/getReview',{article:article})
+   // getReview(baseURL,apiKey,article)
     .then(function(data)
     {
         // Add data
-        console.log(data);
+        //console.log(data);
         postData('/addReview', {model: data.model,score_tag: data.score_tag,agreement: data.agreement,subjectivity: data.subjectivity,confidence: data.confidence, irony: data.irony} );
         updateUI()
     })
@@ -54,35 +49,6 @@ const postData = async ( url = '', data = {})=>
       }
   }
 
-
-/* Function to GET Web API Data*/
-const getReview = async (baseURL, key,article)=>
-{
-
-    const formdata = new FormData();
-    formdata.append("key",key);
-    formdata.append("txt",article);
-    formdata.append("lang", "en");
-
-    const requestOptions = {
-      method: 'POST',
-      body: formdata,
-      redirect: 'follow'
-    };
-
-    const res = await fetch(baseURL, requestOptions)
-    try 
-    {
-      const data = await res.json();
-      //console.log(Status,data)
-      return data;
-    }
-    catch(error) 
-    {
-      console.log("error", error);
-      // appropriately handle the error
-    }
-}
 
 //update data in website
 const updateUI = async () => 
